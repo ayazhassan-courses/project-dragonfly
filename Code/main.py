@@ -13,16 +13,17 @@ from queue import PriorityQueue
 
 def main():
     document = docx.Document("test3.docx")
+    output_error = "All Errors found:"
     name_list = check_dir()
     queue = priority_queue(name_list)
     user_dict= get_user_data()
-    end_compressor_names = False
-    for i in queues:
-        if i == "mainline":
-            end_compressor_names = True
-        nested_list = getdata(i)
-        getvalues(nested_list, min_limitflow)
-        if end_compressor_names == False:
-            compressor_table(n,i,user_dict[i][0],user_dict[i][1],user_dict[i][2] )   #(number of compressor , name of compressor ,motor power , rated_flow, manufacturing_year)
-        if end_compressor_names == True:
+    compressor_name_tup, motor_power_tup,  rated_flow_tup, manufacturing_year_tup = get_user_data()
+    n= len(compressor_name_tup)
+    compressor_table(n, compressor_name,motor_power,rated_flow,manufacturing_year )
+    for i in compressor_names:
+        if i not in name_list:
+            output_error+ =(f"\nError: compressor {i} not in directory folder")
+            continue
+        
+        
     
