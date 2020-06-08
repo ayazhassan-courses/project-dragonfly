@@ -1,0 +1,17 @@
+Dust particles in compressor's air intake.
+Surrounding heat affects compressor room temperature. 
+Cross ventilation was present but not sufficient for compressors.
+Compressor room are not designed to proper specifications.
+T-connections and short-bend elbows are used in many areas including compressor output, dryer output, and tank output.
+No permanent installation of compressed air flow meters to monitor this expensive utility.
+Pressure gauges before and after dryers were missing.
+Temperature sensor was not installed at dryers’ inlet and outlet.
+Water was spilled on compressor room floor.
+Sub meters are not installed.
+Due to the age of receiver tank it may corrode from inside. Tanks need to have inspection. 
+Installed Receiver Tank Volume
+Installed air receiver tank has a volume of 3,000 Liters.
+Compressed air leakage in distribution piping network.
+Absence of Pressure gauges on distribution piping.
+Cleaning through expensive compressed air at many places.
+Leakage rate is high at Packing Hall department.
