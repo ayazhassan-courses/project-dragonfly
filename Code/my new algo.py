@@ -1,5 +1,7 @@
 import hashlib
 import math
+import tkinter as tk
+from tkinter import filedialog
 
 def get_index(string,prime):   # n = number of index
     string = string.lower()
@@ -26,7 +28,7 @@ def nearest_prime(n):
     return nearest_prime(n+1)
         
 def make_lst(strings):
-    lst = strings.split(".")
+    lst = strings.split("\n")
     lst= [i.split() for i in lst]
     return lst
 def fuzzy_word(word):
@@ -53,7 +55,7 @@ def fuzzy_word(word):
         
         return final
     else:
-        return word
+        return 0
 
 
 def make_hashtable(sentences):      # sentence(format) = [[group1 words], [group2 words]]
@@ -67,17 +69,18 @@ def make_hashtable(sentences):      # sentence(format) = [[group1 words], [group
             index, word = get_index(word,prime)
             bool_list=False
             if lst[index] == 0:
-                lst[index]= [[sentences[i][j],[group_no]]]
+                lst[index]= [[word,[group_no]]]
                 continue
             for h in range(len(lst[index])):
                 if lst[index][h][0] == word:
-                    if group_no not in  lst[index][0][1]:
+                    if group_no not in  lst[index][h][1]:
+                        
                         lst[index][h][1].append(group_no)
                         bool_list= True
-                if len(lst[index][h][1]) >= math.ceil(len(sentences)/2):
+                if len(lst[index][h][1]) >= math.ceil(2*len(sentences)/3):
                     lst[index][h].append("Too common")
             if bool_list== False:
-                lst[index].append([sentences[i][j],[group_no]])
+                lst[index].append([word,[group_no]])
             
     
     for i in range(len(lst)):   # removing common words
@@ -89,24 +92,143 @@ def make_hashtable(sentences):      # sentence(format) = [[group1 words], [group
                 break
     return lst
 
-
-def search(word,lst,sentences):
+def search(word,lst):
     prime= len(lst)
-    index,word1 = get_index(word,prime)
-    print(lst[index])
+    fuzzy= fuzzy_word(word)
+    index,word1 = get_index(fuzzy,prime)
+    g= lst[index]
+    num = None
+    if g != 0 :
+        for i in range(len(g)):
+            if fuzzy == g[i][0]:
+                num = g[i][1]
+    return num
+
+
+
+
+def get_keywords(string,lst,sentences):
+    string= string.split()
+    strings= "Keyword not found"
+    b= set()
+    c= set()
+    d = set()
+    temp= search(string[0],lst)
+    if temp == None :
+        a= set()
+    else:
+        a= set(temp)
+    if len(string) > 1:
+        temp= search(string[1],lst)
+        if temp == None :
+            b= set()
+        else:
+            
+            b= set(temp)
+    if len(string) > 2:
+        temp= search(string[2],lst)
+        if temp == None :
+            c= set()
+        else:
+            c= set(temp)
+    if len(string) > 3:
+        temp= search(string[3],lst)
+        if temp == None :
+            d= set()
+        else:
+            d= set(temp)
+    
+    if a == set() and b == set()and c == set() and d== set():
+        result = []
+    if a != set() and b == set()and c == set() and d== set():
+        result = a
+    if a != set() and b != set()and c == set() and d== set():
+        result = list(a.intersection(b))
+    if a != set() and b != set() and c != set() and d== set():
+
+        result = list(a.intersection(b,c,d))
+    result= list(result)
+    if result == []:
+        result = list(a)+list(b)
+    if result != []:
+        strings=""
+    
+    for i in range(len(result)):
+        strings+= "("+str(i+1)+")"+" ".join(sentences[result[i]])+"\n"
+    return strings
+
+
+file = open("SampleSet.txt","r")
+st= file.read()
+sentences = make_lst(st)
+lst =make_hashtable(sentences)
+pat= "father today"
+print(get_keywords(pat,lst,sentences))
+
+import cProfile
+cProfile.run('get_keywords(pat,lst,sentences)')
+
+
+'''
+root2 = tk.Tk()
+root2.withdraw()
+path =filedialog.askopenfilename()
+count =0
+root = tk.Tk()
+root.title('Search bar')
+root.configure(background="#1d8fdb")
+root.geometry("850x550")
+root.resizable(0, 0)
+label_search= tk.Label(root,text = "Enter keywords",background="#1d8fdb")
+label_search.grid(row = 0, column = 1, pady = 2)
+entry = tk.Entry(root,width = 40, )
+entry.grid(row = 2, column = 2, pady = 2)
+text = tk.Text(root,)
+text.grid(row = 5, column = 2, pady = 2)
+file = open(path,"r")
+strings_set= file.read()
+file.close()
+sentences= make_lst(strings_set)
+lst= make_hashtable(sentences)
+def get_vals(event):
+    text.delete('1.0', tk.END)
+    string=""
+    string = entry.get()
+    if string != "":
+        s= get_keywords(string,lst,sentences)
+    else:
+        s= "Enter keyword"
+    
+    text.insert(tk.END, s)
+    
+    return
+def get_val():
+    text.delete('1.0', tk.END)
+    string=""
+    string = entry.get()
+    if string != "":
+        s= get_keywords(string,lst,sentences)
+    else:
+        s= "Enter keyword"
+    
+    text.insert(tk.END, s)
+    
     return
 
-strings="hello everyone how are u today. we have descided to build this machine to test out what can we do. we will be changing how u will think"
-sentences= make_lst(strings)
+root.bind('<Return>', get_vals)
+
+label_search= tk.Label(root,text = "Results:",background="#1d8fdb")
+label_search.grid(row = 4, column = 1, pady = 2)
+
+button= tk.Button(root, text ="search", command = get_val,height=2, width=15 )
+button.grid(row = 3, column = 3, pady = 2)
+
+
+root.mainloop()
 
 '''
-lst= make_hashtable(sentences)
 
-print(lst)
-word= "machine"
-search(word,lst,sentences)
-'''
-    
+  
 
 
 
