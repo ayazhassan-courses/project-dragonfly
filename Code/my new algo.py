@@ -106,7 +106,6 @@ def search(word,lst):
 
 
 
-
 def get_keywords(string,lst,sentences):
     string= string.split()
     strings= "Keyword not found"
@@ -227,12 +226,3 @@ button.grid(row = 3, column = 3, pady = 2)
 root.mainloop()
 
 '''
-
-  
-
-
-
-
-
-
-

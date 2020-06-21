@@ -1,4 +1,5 @@
   
+
 # Following program is the python implementation of 
 # Rabin Karp Algorithm given in CLRS book 
   
@@ -15,6 +16,7 @@ def search(pat, txt):  # slightly modified
     N = len(txt) 
     i = 0
     j = 0
+
     p = 0    # hash value for pattern 
     t = 0    # hash value for txt 
     h = 1
@@ -104,6 +106,39 @@ def saerching_orignal_algorithim(string, lst):
     
     return (result , strings)
     
+
+    p = 0     
+    t = 0     
+    h = 1
+  
+    for i in range(M-1): 
+        h = (h * d)% q
+    
+  
+    for i in range(M): 
+        p = (d * p + ord(pat[i]))% q 
+        t = (d * t + ord(txt[i]))% q
+        print("pattern",p)
+        print("text",t)
+    for i in range(N-M + 1): 
+        
+        if p == t: 
+             
+            for j in range(M): 
+                if txt[i + j] != pat[j]: 
+                    break
+  
+            j+= 1 
+            if j == M: 
+                print ("Pattern found at index " + str(i)) 
+  
+        
+        if i < N-M: 
+            t = (d*(t-ord(txt[i])*h) + ord(txt[i + M]))% q  
+            if t < 0: 
+                t = t + q 
+
+
 def fuzzy_word(word):
     
     if  type(word) == str:
@@ -129,6 +164,7 @@ def fuzzy_word(word):
         return final
     else:
         return word
+
 
 def extract(stop_words,lst ):
     string= []
@@ -201,19 +237,20 @@ d = 256
 file = open("SampleSet.txt","r")
 string=file.read()
 file.close()
-#file = open("stop words.txt","r")
-#stop_words=file.read()
-#stop_words= stop_words.split("\n")
-#file.close()
-#lst_sent = string.split("\n")
-#lst = [i.split() for i in lst_sent]
-#lst = extract(stop_words,lst )
-#pat ="father"
-#search_rabin(pat, lst,lst_sent)
-pat = "father"
+file = open("stop words.txt","r")
+stop_words=file.read()
+stop_words= stop_words.split("\n")
+file.close()
+lst_sent = string.split("\n")
+lst = [i.split() for i in lst_sent]
+lst = extract(stop_words,lst )
+pat ="father"
+search_rabin(pat, lst,lst_sent)
+#pat = "father"
 #print(saerching_orignal_algorithim(pat, string))
 
 
 
 import cProfile
-cProfile.run('saerching_orignal_algorithim(pat, string)')
+#cProfile.run('saerching_orignal_algorithim(pat, string)')
+#cProfile.run("search_rabin(pat, lst,lst_sent)")
